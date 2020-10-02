@@ -2,13 +2,17 @@
 
 import pygame
 from pygame.draw import *
-
+from random import *
 pygame.init()
 
 FPS = 30
 screen = pygame.display.set_mode((600, 800))
 S2 = pygame.Surface((600, 800))
 
+def ell(s, col, rect):
+    ellipse(s,col,rect)
+    for i in range(8):
+        circle(s, (0,0,0), (randint(int(rect[0]+rect[2]/5), int(rect[0]+rect[2]-rect[2]/5)),randint(int(rect[1]+rect[3]/5), int(rect[1]+rect[3]-rect[3]/5))), randint(int(rect[3]/15), int(rect[3]/5)))
 
 def draw_window(x, y, size_X, size_Y):
     rect(screen, (213, 255, 230), (x, y, size_X, size_Y))
@@ -19,11 +23,13 @@ def draw_window(x, y, size_X, size_Y):
 
 def draw_a_cat(x, y, size_X, size_Y, body_color_red, body_color_green, body_color_blue, eye_color_red, eye_color_green, eye_color_blue, orientation):
     if orientation == 1:
-        ellipse(screen, (0, 0, 0), [x + size_X / 1.9 + size_X / 25 - 1, y + 0.12 * size_Y + size_Y / 40 - 1, size_X / 2.2 + 2, size_Y / 2.7 + 2])
-        ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 1.9 + size_X / 25, y + 0.12 * size_Y + size_Y / 40, size_X / 2.2, size_Y / 2.7])
+        tail_length = size_X / 2.2 * randint(3,10) / 5
+        ellipse(screen, (0, 0, 0), [x + size_X / 1.9 + size_X / 25 - 1, y + 0.12 * size_Y + size_Y / 40 - 1, tail_length + 2, size_Y / 2.7 + 2])
+        ell(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 1.9 + size_X / 25, y + 0.12 * size_Y + size_Y / 40, tail_length , size_Y / 2.7])
 
         ellipse(screen, (0, 0, 0),[x + size_X / 8 - 1, y - size_Y / 30 - 1, size_X / 2 + 2, 0.9 * size_Y + 2])  # body line
-        ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 8, y - size_Y / 30, size_X / 2, 0.93 * size_Y])  # body
+        ell(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 8, y - size_Y / 30, size_X / 2, 0.93 * size_Y])  # body
+        
 
         ellipse(screen, (0, 0, 0),[x + size_X / 15 - 1, y + 0.43 * size_Y - 1, size_X / 12 + 2, size_Y / 2.4 + 2])  # back paw line
         ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 15, y + 0.43 * size_Y, size_X / 12, size_Y / 2.4])  # back paw
@@ -66,23 +72,32 @@ def draw_a_cat(x, y, size_X, size_Y, body_color_red, body_color_green, body_colo
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 44, y + size_Y / 1.75, size_X / 40, size_Y / 12], 3.14, 6.28, 1)  # left lip
 
         # left whisker
-        arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
+        if(size_X >= 200):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 - size_X / 40, y + 0.465 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 + size_X / 40, y + 0.575 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.05, 1)
+        if(size_X >= 250):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 - size_X / 40, y + 0.415 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 + size_X / 40, y + 0.625 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.05, 1)
+        
 
         # right whisker
-        arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
+        if(size_X >= 200):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 + size_X / 40, y + 0.465 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.03, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 - size_X / 40, y + 0.575 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
+        if(size_X >= 250):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 + size_X / 40, y + 0.415 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.03, 1)
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 - size_X / 40, y + 0.625 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
 
 
     elif orientation == 0:
-
-        ellipse(screen, (0, 0, 0), [x - size_X / 2.1 - size_X / 3.2 - 1, y + 0.12 * size_Y + size_Y / 40 - 1, size_X / 2.2 + 2, size_Y / 2.7 + 2])
-        ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x - size_X / 2.1 - size_X / 3.2, y + 0.12 * size_Y + size_Y / 40, size_X / 2.2, size_Y / 2.7])
+        tail_length = size_X / 2.2 * randint(3,10) / 5
+        ellipse(screen, (0, 0, 0), [x - tail_length - size_X / 3.2 - 1, y + 0.12 * size_Y + size_Y / 40 - 1, tail_length + 2, size_Y / 2.7 + 2])
+        ell(screen, (body_color_red, body_color_green, body_color_blue), [x - tail_length - size_X / 3.2, y + 0.12 * size_Y + size_Y / 40, tail_length, size_Y / 2.7])
 
         ellipse(screen, (0, 0, 0), [x - size_X / 2.5 - 1, y - size_Y / 30 - 1, size_X / 2 + 2, 0.9 * size_Y + 2])  # body line
-        ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x - size_X / 2.5, y - size_Y / 30, size_X / 2, 0.93 * size_Y])  # body
+        ell(screen, (body_color_red, body_color_green, body_color_blue), [x - size_X / 2.5, y - size_Y / 30, size_X / 2, 0.93 * size_Y])  # body
 
         ellipse(screen, (0, 0, 0), [x + size_X / 10 - 1, y + 0.43 * size_Y - 1, size_X / 12 + 2, size_Y / 2.4 + 2])  # back paw line
         ellipse(screen, (body_color_red, body_color_green, body_color_blue), [x + size_X / 10, y + 0.43 * size_Y, size_X / 12, size_Y / 2.4])  # back paw
@@ -126,14 +141,22 @@ def draw_a_cat(x, y, size_X, size_Y, body_color_red, body_color_green, body_colo
 
         # whiskers
         # right
-        arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
+        if(size_X >= 200):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 + size_X / 40, y + 0.465 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.03, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 - size_X / 40, y + 0.575 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
+        if(size_X >= 250):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 + size_X / 40, y + 0.415 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.03, 1)
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 6.5 - size_X / 40, y + 0.625 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
 
         # left
-        arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
+        if(size_X >= 200):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5, y + 0.525 * size_Y, size_X / 1.8, size_Y * 2], 1.25, 1.95, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 - size_X / 40, y + 0.465 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
         arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 + size_X / 40, y + 0.575 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.05, 1)
+        if(size_X >= 250):
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 - size_X / 40, y + 0.415 * size_Y, size_X / 1.8, size_Y * 2], 1.15, 1.85, 1)
+            arc(screen, (0, 0, 0), [x + size_X / 8.4 - size_X / 2.5 + size_X / 40, y + 0.625 * size_Y, size_X / 1.8, size_Y * 2], 1.35, 2.05, 1)
 
 
 def ball(x, y, r, orientation):
@@ -147,7 +170,6 @@ def ball(x, y, r, orientation):
         arc(screen, (0, 0, 0), [x - r + 0.25 * r, y - r + 0.5 * r, 2 * r, 2 * r], 2, 3, 1)
         arc(screen, (0, 0, 0), [x - r + 0.41 * r, y - r + 0.65 * r, 2.1 * r, 2.1 * r], 2, 3, 1)
         arc(screen, (0, 0, 0), [x - r + 0.65 * r, y - r + 0.85 * r, 2 * r, 2 * r], 2, 3, 1)
-
     if orientation == 1:
         arc(screen, (0, 0, 0), [x - r + 0.17 * r, y - r + 0.25 * r, 1.9 * r, 1.9 * r], 1.7, 3.14, 1)
         arc(screen, (0, 0, 0), [x - r + 0.35 * r, y - r + 0.35 * r, 2 * r, 2 * r], 1.7, 3.14, 1)
@@ -192,10 +214,10 @@ draw_a_cat(490, 750, 100, 30, 108, 93, 83, 42, 212, 255, 1)
 
 draw_a_cat(300, 420, 300, 100, 200, 113, 55, 156, 208, 19, 1)
 draw_a_cat(350, 680, 100, 30, 200, 113, 55, 156, 208, 19, 1)
-draw_a_cat(120, 450, 100, 30, 200, 113, 55, 156, 208, 19, 0)
-draw_a_cat(540, 590, 100, 30, 200, 113, 55, 156, 208, 19, 0)
+draw_a_cat(150, 450, 200, 60, 200, 113, 55, 156, 208, 19, 0)
+draw_a_cat(540, 590, 200, 60, 200, 113, 55, 156, 208, 19, 0)
 
-ball(180, 455, 20, 0)
+ball(230, 455, 20, 0)
 ball(150, 710, 18, 0)
 ball(270, 730, 55, 0)
 ball(415, 760, 18, 0)
